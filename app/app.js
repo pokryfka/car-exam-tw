@@ -844,7 +844,8 @@ function weakListView() {
         },
           h('td', {}, h('div', { class: 'muted' }, questionLabel(q)),
             (q.images || []).map(src => h('img', { class: 'thumb', src: 'data/' + src, alt: '' })), qText(q).q),
-          h('td', { class: 'num' }, statLabel(r))))),
+          h('td', { class: 'num' }, statLabel(r)),
+          h('td', { class: 'chevron', 'aria-hidden': 'true' }, '›')))),
       ]
       : h('p', { class: 'muted' }, t('weak.none'))));
   setKeys([
