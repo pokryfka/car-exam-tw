@@ -130,7 +130,42 @@
     return { total: questions.length, seen, mastered, weak, right, wrong };
   }
 
-  const api = { HISTORY, recordAnswer, mergeDevices, weakness, isMastered, needsReview, pickQuestions, pickExam, summary, shuffle };
+  // Made-up stats for testing every screen (QA only): each pattern is a run of answers,
+  // "1" right, "0" wrong, "2" right but unsure, given to `count` random questions. A few
+  // hazard-perception questions always get mistakes, so their section shows up too.
+  const TEST_PATTERNS = [
+    { count: 30, answers: '0010' },   // often wrong (first, so the hazard questions rank high)
+    { count: 40, answers: '10' },     // wrong last time
+    { count: 25, answers: '2' },      // right but unsure
+    { count: 15, answers: '12' },
+    { count: 40, answers: '111' },    // mastered
+    { count: 20, answers: '0111' },   // mastered after a mistake
+    { count: 80, answers: '1' },      // right once
+    { count: 20, answers: '10101' },  // mixed
+  ];
+  const DAY = 24 * 3600 * 1000;
+
+  function makeTestStats(questions, now, rand) {
+    rand = rand || Math.random;
+    const hazard = shuffle(questions.filter(q => q.hazard), rand).slice(0, 3);
+    const order = hazard.concat(shuffle(questions.filter(q => !hazard.includes(q)), rand));
+    const stats = {};
+    let i = 0;
+    for (const { count, answers } of TEST_PATTERNS) {
+      for (const q of order.slice(i, i + count)) {
+        // Start early enough that answers a day apart at most all lie in the past.
+        let t = now - answers.length * DAY - Math.floor(rand() * 14 * DAY);
+        for (const a of answers) {
+          recordAnswer(stats, q.id, a !== '0', t, a === '2');
+          t += Math.floor(rand() * DAY);
+        }
+      }
+      i += count;
+    }
+    return stats;
+  }
+
+  const api = { HISTORY, recordAnswer, makeTestStats, mergeDevices, weakness, isMastered, needsReview, pickQuestions, pickExam, summary, shuffle };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.Core = api;
 })(this);

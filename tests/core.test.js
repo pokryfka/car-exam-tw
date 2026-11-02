@@ -95,3 +95,18 @@ test('weak mode and summary include unsure questions; merge sums unsure counts',
   assert.deepStrictEqual(m.a, { c: 3, w: 0, u: 2, h: '12', t: 9 });
   assert.deepStrictEqual(m.b, { c: 1, w: 0, h: '1', t: 1 });
 });
+
+test('test stats cover every kind of record, including hazard-perception mistakes', () => {
+  const bank = Array.from({ length: 400 }, (_, i) => ({ id: 'q' + i })).concat(Array.from({ length: 10 }, (_, i) => ({ id: 'h' + i, hazard: true })));
+  const stats = Core.makeTestStats(bank, 1e12);
+  const records = Object.entries(stats);
+  assert.strictEqual(records.length, 270);
+  assert.ok(records.some(([, r]) => r.w > 0 && Core.needsReview(r)), 'mistakes');
+  assert.ok(records.some(([, r]) => r.u > 0 && r.w === 0), 'unsure only');
+  assert.ok(records.some(([, r]) => Core.isMastered(r)), 'mastered');
+  assert.ok(records.some(([, r]) => r.c === 1 && r.h === '1'), 'right once');
+  assert.ok(records.filter(([id, r]) => id.startsWith('h') && r.w > 0).length >= 3, 'hazard mistakes');
+  for (const [, r] of records) assert.ok(r.t <= 1e12 && r.h.length <= Core.HISTORY);
+  const s = Core.summary(bank, stats);
+  assert.ok(s.weak > 50 && s.mastered >= 60, JSON.stringify(s));
+});

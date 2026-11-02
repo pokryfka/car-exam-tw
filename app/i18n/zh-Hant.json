@@ -153,6 +153,9 @@
   "settings.hazardEdition": "危險感知影片題：{edition} 版，共 {count} 題，提供中文與英文。",
   "settings.resetConfirm": "要重設這台裝置的作答紀錄嗎？其他裝置的紀錄會保留。",
   "settings.reset": "重設這台裝置",
+  "settings.testData": "填入測試資料（QA）",
+  "settings.testDataHelp": "僅限 QA：以虛構的作答紀錄（答錯、不確定、已熟練及新題）取代這台裝置的紀錄，讓每個畫面都有內容可測試。按「重設這台裝置」即可清除。",
+  "settings.testDataConfirm": "要以虛構的測試資料取代這台裝置的作答紀錄嗎？",
   "settings.version": "版本",
 
   "settings.support": "意見回饋",

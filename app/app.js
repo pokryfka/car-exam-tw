@@ -1284,7 +1284,23 @@ function settingsView() {
             sync.run();
             homeView();
           },
-        }, t('settings.reset')))),
+        }, t('settings.reset'))),
+      // QA only: made-up stats so every screen, including the weak list and Mistakes, has
+      // something to show. Reset this device clears them.
+      state.config.environment === 'qa' && [
+        h('div', { class: 'actions' },
+          h('button', {
+            class: 'btn',
+            onclick: () => {
+              if (!confirm(t('settings.testDataConfirm'))) return;
+              state.myStats = Core.makeTestStats(state.questions, Date.now());
+              store.set('myStats', state.myStats);
+              sync.run();
+              homeView();
+            },
+          }, t('settings.testData'))),
+        h('p', { class: 'muted' }, t('settings.testDataHelp')),
+      ]),
     h('div', { class: 'card' },
       h('h2', {}, t('settings.support')),
       h('p', { class: 'muted' }, t('settings.supportHelp')),
