@@ -32,7 +32,7 @@ Pick a mode on the home screen:
 | 🆕 **New** | Questions you have never answered |
 | 🎲 **Random** | Any question |
 | 📝 **Mock exam** | 50 random questions, like the real test: 45 written and 5 hazard-perception questions, 2 points each, 85 points to pass, 30 minutes |
-| 📊 **Weak list** | Your 50 weakest questions, with a button to practise them |
+| 📊 **Weak list** | Your 50 weakest questions, with a button to practise them. Tap a question to answer just that one and come back to the updated list |
 
 - After each answer you see whether you were right, and the correct answer is highlighted.
 - Not sure of an answer? Tap **? Unsure** before you answer. If you're right, it counts as
@@ -78,7 +78,7 @@ keys for the current screen are listed at the bottom, and **?** shows them all.
 | Practice | **1**–**3** answer · **/** unsure · **L** question language · **Space** next question · **Esc** home |
 | Mock exam | **1**–**3** answer · **/** unsure · **L** question language · **←** **→** previous / next question · **N** next unanswered question · **F** finish exam |
 | Result | **Enter** home · **R** retry mistakes |
-| Weak list | **Enter** practise these · **Esc** home |
+| Weak list | **Enter** practise these · **Tab** then **Enter** answer a question · **Esc** home (or back to the list from a question) |
 | Settings | **Esc** home |
 
 **Esc** doesn't leave a mock exam, so you can't lose one by accident.

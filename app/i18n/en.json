@@ -63,6 +63,7 @@
 
   "weak.title": "Questions to review",
   "weak.practice": "Practice these",
+  "weak.tapHint": "Tap a question to answer it.",
   "weak.none": "No wrong or unsure answers recorded yet.",
 
   "q.new": "new",
@@ -77,6 +78,7 @@
   "q.wrong": "✗ Wrong: answer is {answer}",
   "q.next": "Next →",
   "q.finish": "Finish",
+  "q.backToList": "← Back to list",
   "exam.timeLeft": "Time left",
   "exam.timeWarning": "{minutes} minutes left",
   "exam.position": "Question {n} / {total}",
@@ -106,6 +108,7 @@
   "keys.nextUnanswered": "next unanswered question",
   "keys.finish": "finish exam",
   "keys.home": "home",
+  "keys.backToList": "back to list",
   "keys.practice": "practise these",
   "keys.retry": "retry mistakes",
 
