@@ -159,6 +159,9 @@ label.first { margin-top: 0; }
 table.weak { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
 table.weak td { padding: 8px 4px; border-top: 1px solid var(--border); vertical-align: top; }
 table.weak td.num { text-align: right; white-space: nowrap; color: var(--bad); }
+table.weak tr.clickable { cursor: pointer; }
+table.weak tr.clickable:hover td, table.weak tr.clickable:focus-visible td { background: var(--bg); }
+table.weak tr.clickable:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
 table.editions { width: 100%; border-collapse: collapse; font-size: 0.9375rem; margin-bottom: 8px; }
 table.editions th, table.editions td { padding: 8px 4px; border-top: 1px solid var(--border); text-align: left; vertical-align: top; }

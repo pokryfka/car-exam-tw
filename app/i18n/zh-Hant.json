@@ -63,6 +63,7 @@
 
   "weak.title": "待複習的題目",
   "weak.practice": "練習這些題目",
+  "weak.tapHint": "點選題目即可作答。",
   "weak.none": "目前沒有答錯或不確定的紀錄。",
 
   "q.new": "新題",
@@ -77,6 +78,7 @@
   "q.wrong": "✗ 答錯了，正確答案是 {answer}",
   "q.next": "下一題 →",
   "q.finish": "完成",
+  "q.backToList": "← 返回清單",
   "exam.timeLeft": "剩餘時間",
   "exam.timeWarning": "剩下 {minutes} 分鐘",
   "exam.position": "第 {n} / {total} 題",
@@ -106,6 +108,7 @@
   "keys.nextUnanswered": "下一個未作答的題目",
   "keys.finish": "交卷",
   "keys.home": "回首頁",
+  "keys.backToList": "返回清單",
   "keys.practice": "練習這些題目",
   "keys.retry": "重練錯題",
 

@@ -711,7 +711,7 @@ document.addEventListener('keydown', e => {
   }
   // Enter and Space already press a focused button or link (a disabled one, like an answered
   // option, does nothing, so the screen's shortcut applies).
-  if ((e.key === 'Enter' || e.key === ' ') && e.target.closest('button:not(:disabled), a')) return;
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.closest('button:not(:disabled), a, [role=button]')) return;
   const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
   const binding = keyboard.bindings.find(b => b.keys.includes(key));
   if (!binding || (e.repeat && !binding.repeat)) return;
@@ -754,7 +754,7 @@ function homeView() {
   const len = state.settings.length;
 
   const start = (mode) => () => {
-    const picked = Core.pickQuestions(qs, stats, mode, len);
+    const picked = Core.pickQuestions(qs, stats, mode, state.settings.length);
     if (!picked.length) {
       alert(t(mode === 'weak' ? 'home.noWeak' : 'home.nothingLeft'));
       return;
@@ -830,7 +830,18 @@ function weakListView() {
     rows.length
       ? [
         h('button', { class: 'btn primary', style: 'width:100%;margin-bottom:10px', onclick: () => startSession(rows.slice(0, state.settings.length).map(x => x.q.id), 'weak', false) }, t('weak.practice')),
-        h('table', { class: 'weak' }, rows.map(({ q, r }) => h('tr', {},
+        h('p', { class: 'muted' }, t('weak.tapHint')),
+        h('table', { class: 'weak' }, rows.map(({ q, r }) => h('tr', {
+          class: 'clickable',
+          tabindex: 0,
+          role: 'button',
+          onclick: () => openFromWeakList(q.id),
+          onkeydown: e => {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            e.preventDefault();
+            openFromWeakList(q.id);
+          },
+        },
           h('td', {}, h('div', { class: 'muted' }, questionLabel(q)),
             (q.images || []).map(src => h('img', { class: 'thumb', src: 'data/' + src, alt: '' })), qText(q).q),
           h('td', { class: 'num' }, statLabel(r))))),
@@ -842,8 +853,19 @@ function weakListView() {
   ]);
 }
 
-function startSession(ids, mode, exam) {
-  state.session = { ids, idx: 0, mode, exam, results: [] };
+// Answer one question from the weak list, then come back to the list, recalculated with the new
+// answer and scrolled to where it was.
+function openFromWeakList(id) {
+  const y = window.scrollY;
+  startSession([id], 'weak', false, () => {
+    weakListView();
+    window.scrollTo(0, y);
+  });
+}
+
+// back: for a session opened from another screen, returns there instead of showing a result.
+function startSession(ids, mode, exam, back) {
+  state.session = { ids, idx: 0, mode, exam, results: [], back };
   if (!exam) return questionView();
   // The mock exam works like the official test: answers can be changed until it is handed in.
   Object.assign(state.session, { answers: ids.map(() => null), unsure: ids.map(() => false), started: Date.now() });
@@ -1111,13 +1133,20 @@ function questionView() {
       else if (ch.value === value) buttons[i].classList.add('wrong');
     });
     showFeedback();
-    actions.append(h('button', { class: 'btn primary', onclick: next }, t(s.idx + 1 < s.ids.length ? 'q.next' : 'q.finish')));
+    actions.append(h('button', { class: 'btn primary', onclick: next },
+      t(s.idx + 1 < s.ids.length ? 'q.next' : s.back ? 'q.backToList' : 'q.finish')));
   }
 
   function next() {
     s.idx++;
     if (s.idx < s.ids.length) questionView();
+    else if (s.back) goBack();
     else resultView();
+  }
+
+  function goBack() {
+    state.session = null;
+    s.back();
   }
 
   showText(lang);
@@ -1139,7 +1168,9 @@ function questionView() {
     { keys: ['/'], show: '/', label: 'keys.unsure', run: () => press(unsureButton) },
     languageKey(toggle),
     { keys: [' ', 'ArrowRight'], show: 'Space', label: 'keys.next', run: () => press(actions.querySelector('button')) },
-    { keys: ['Escape'], show: 'Esc', label: 'keys.home', run: goHome },
+    s.back
+      ? { keys: ['Escape'], show: 'Esc', label: 'keys.backToList', run: goBack }
+      : { keys: ['Escape'], show: 'Esc', label: 'keys.home', run: goHome },
   ]);
 }
 
