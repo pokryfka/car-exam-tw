@@ -153,6 +153,9 @@
   "settings.hazardEdition": "Hazard-perception video questions: edition {edition}, {count} questions, in Chinese and English.",
   "settings.resetConfirm": "Reset the stats recorded on this device? Other devices keep theirs.",
   "settings.reset": "Reset this device",
+  "settings.testData": "Fill with test data (QA)",
+  "settings.testDataHelp": "QA only: replaces this device's stats with made-up answers (mistakes, unsure, mastered and new questions) so every screen has something to show. Reset this device clears them.",
+  "settings.testDataConfirm": "Replace this device's stats with made-up test data?",
   "settings.version": "Version",
 
   "settings.support": "Support",

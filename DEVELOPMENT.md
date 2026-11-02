@@ -264,6 +264,20 @@ Both environments also stay on their `workers.dev` addresses (`car-exam-tw.pokry
 and `car-exam-tw-qa.pokryfka.workers.dev`).
 Pull requests from forks run the tests only.
 
+**Test data in QA:**
+- On QA, where `/api/config` reports `environment: "qa"`, ⚙️ → Data has a **Fill with test data
+  (QA)** button.
+- It replaces the device's stats with made-up answers from `Core.makeTestStats()` in
+  `app/core.js`, covering 270 questions:
+  - mistakes, including 3 hazard-perception questions;
+  - unsure answers;
+  - mastered questions;
+  - questions answered right once;
+  - mixed histories.
+- The Weak list, Mistakes and other screens can then be tested on a fresh device. **Reset this
+  device** clears the data.
+- Production never shows the button.
+
 **Settings, all in `wrangler.jsonc`:**
 - Worker names, custom domains (`routes`), and database names and IDs, for each environment.
 - Rate limit: requests per minute per client IP to the sync API.
